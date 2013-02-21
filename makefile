@@ -14,5 +14,5 @@ clean:
 	rm -f *.o
 
 erase:
-	rm -f *.0
+	rm -f *.o
 	rm -f z827
