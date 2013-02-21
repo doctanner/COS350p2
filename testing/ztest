@@ -1,19 +1,19 @@
 echo
 echo "SET UP:"
-cp ../testing/short.txt ./
-cp ../testing/shake.txt ./
+cp testing/short.txt ./
+cp testing/shake.txt ./
 echo Done.
 
 echo
 echo "TEST 1:"
 z827 short.txt
-od -t x1 short.txt.z827.referenceSoln > goodResult
+od -t x1 testing/short.txt.z827.referenceSoln > goodResult
 od -t x1 short.txt.z827 > myResult
 diff myResult goodResult
 
 echo
 z827 short.txt.z827
-od -t x1 ../testing/short.txt > goodResult
+od -t x1 testing/short.txt > goodResult
 od -t x1 short.txt > myResult
 diff myResult goodResult
 
@@ -23,7 +23,7 @@ z827 shake.txt
 
 echo
 z827 shake.txt.z827
-diff shake.txt ../testing/shake.txt
+diff shake.txt testing/shake.txt
 
 echo
 echo "Clean UP:"
