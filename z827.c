@@ -134,7 +134,7 @@ unsigned int compress (int fdSource, int fdDest){
     unsigned char outBuf = 0;
 
     // Write space for original size.
-	if (write(fdDest, &bytesWritten, 4) != 4) return 0;
+	if (write(fdDest, &origBytes, 4) != 4) return 0;
 
 	// Load first char and start compressing.
     currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
