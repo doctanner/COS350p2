@@ -1,7 +1,7 @@
 echo
 echo "SET UP:"
-cp bak/short.txt ./
-cp bak/shake.txt ./
+cp ../testing/short.txt ./
+cp ../testing/shake.txt ./
 echo Done.
 
 echo
@@ -13,7 +13,7 @@ diff myResult goodResult
 
 echo
 z827 short.txt.z827
-od -t x1 bak/short.txt > goodResult
+od -t x1 ../testing/short.txt > goodResult
 od -t x1 short.txt > myResult
 diff myResult goodResult
 
@@ -23,11 +23,13 @@ z827 shake.txt
 
 echo
 z827 shake.txt.z827
-diff shake.txt bak/shake.txt
+diff shake.txt ../testing/shake.txt
 
 echo
 echo "Clean UP:"
 rm myResult
 rm goodResult
+rm short.txt
+rm shake.txt
 echo Done.
 echo
