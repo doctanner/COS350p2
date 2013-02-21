@@ -127,14 +127,14 @@ unsigned int compress (int fdSource, int fdDest){
     int currBytesLoaded = 0;
     unsigned int bytesWritten = 0;
     unsigned int origBytes = 0;
-    int leftShift = 7;
+    int bitsOffset = 0;
 
     // Buffers:
     unsigned char inBuf = 0;
     unsigned char outBuf = 0;
 
     // Write space for original size.
-	if (write(fdDest, &bytesWritten, 4) != 4) return 0;
+	if (write(fdDest, &origBytes, 4) != 4) return 0;
 
 	// Load first char and start compressing.
     currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
@@ -145,7 +145,10 @@ unsigned int compress (int fdSource, int fdDest){
 
     	/* Copy un-written high-order bits from the in-buffer to 
     	 * the low-order bits of the out-buffer. */
-        outBuf = inBuf  >> (7 - leftShift);
+    	/* Note: bitsOffset refers to the number of bits in the current
+    	 * character that have already been written. So this many bits
+    	 * should be "pushed off" the end of the buffer. */
+        outBuf = inBuf  >> bitsOffset;
 
         // Read in the next character.
 	    currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
@@ -155,15 +158,19 @@ unsigned int compress (int fdSource, int fdDest){
 
 		/* Copy low-order bits from in-buffer to fill unused
 		 * high-order bits in out-buffer. */
-        outBuf = outBuf | (inBuf << leftShift);
+		/* Note: since bitsOffset is the number of bits "pushed off"
+		 * the previous character, by left-shifting inBuf by
+		 * 7 - bitsOffset buts, we can fill the unused high-order
+		 * bits of outBuf with the same number of bits from inBuf. */
+        outBuf = outBuf | (inBuf << (7-bitsOffset));
 
         // Write out-buffer and count bytes written.
         bytesWritten += write(fdDest,&outBuf,sizeof(char));
 
         // Keep track of shift counts.
-        leftShift--;
-        if (leftShift < 1){
-            leftShift = 7;
+        bitsOffset++;
+        if (bitsOffset > 6){
+            bitsOffset = 0;
 		    currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
 	    	origBytes += currBytesLoaded;
         }
