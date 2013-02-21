@@ -1,16 +1,14 @@
 COMP=gcc
 FLAGS=-g
 
-: z827.o
-	$(COMP) $(FLAGS) z827.o -o bin/z827
+p2: z827.o
+	$(COMP) $(FLAGS) z827.o -o ./bin/z827
 
 z827.o: z827.c
-	cd bin/
-	gcc -c $(FLAGS) ./z827.c
-	cd ../
+	gcc -c $(FLAGS) z827.c
 
 test: z827.o
-	cd bin
+	cd bin; \
 	../testing/ztest
 
 clean:
