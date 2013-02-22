@@ -8,7 +8,7 @@ z827.o: z827.c
 	gcc -c $(FLAGS) z827.c
 
 test: z827
-	testing/ztest > testResult
+	testing/ztest | tee testResult
 	more testResult
 
 clean:
