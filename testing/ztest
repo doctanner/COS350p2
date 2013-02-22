@@ -1,5 +1,8 @@
+echo "z827 Testing Script"
+echo "- James Tanner 2012"
+
 echo
-echo "________________________"
+echo "_________________________"
 echo "SET UP:"
 cp testing/short.txt ./
 cp testing/shake.txt ./
@@ -7,7 +10,7 @@ cp testing/words.txt ./
 echo Done.
 
 echo
-echo "________________________"
+echo "_________________________"
 echo "TEST 1:"
 z827 short.txt
 od -t x1 testing/short.txt.z827.referenceSoln > goodResult
@@ -25,7 +28,7 @@ echo "Result: (Should be none)"
 diff myResult goodResult
 
 echo
-echo "________________________"
+echo "_________________________"
 echo "TEST 2:"
 z827 shake.txt
 
@@ -36,7 +39,7 @@ echo "Result: (Should be none)"
 diff shake.txt testing/shake.txt
 
 echo
-echo "________________________"
+echo "_________________________"
 echo "TEST 3:"
 z827 words.txt
 
@@ -47,7 +50,7 @@ echo "Result: (Should be none)"
 diff words.txt testing/words.txt
 
 echo
-echo "________________________"
+echo "_________________________"
 echo "Clean UP:"
 rm myResult
 rm goodResult
