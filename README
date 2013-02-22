@@ -32,6 +32,6 @@ The makefile provides the following commands:
 * make: Compiles the application and dependancies.
 * make test: compiles the application and runs the included test script.
 * make clean: Removes object files created during compilation, but leaves
-  executable intact.
+  executable intact. Also removes testResult file from "make test".
 * make erase: Removes object files and executable.
 

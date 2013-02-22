@@ -8,10 +8,12 @@ z827.o: z827.c
 	gcc -c $(FLAGS) z827.c
 
 test: z827
-	testing/ztest
+	testing/ztest > testResult
+	more testResult
 
 clean:
 	rm -f *.o
+	rm -f testResult
 
 erase:
 	rm -f *.o
