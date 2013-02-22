@@ -55,8 +55,14 @@ echo "_________________________"
 echo "Clean UP:"
 rm myResult
 rm goodResult
+
 rm short.txt
 rm shake.txt
 rm words.txt
+
+rm short.txt.z827
+rm shake.txt.z827
+rm words.txt.z827
+
 echo Done.
 echo
