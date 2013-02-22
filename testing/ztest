@@ -1,35 +1,58 @@
 echo
+echo "________________________"
 echo "SET UP:"
 cp testing/short.txt ./
 cp testing/shake.txt ./
+cp testing/words.txt ./
 echo Done.
 
 echo
+echo "________________________"
 echo "TEST 1:"
 z827 short.txt
 od -t x1 testing/short.txt.z827.referenceSoln > goodResult
 od -t x1 short.txt.z827 > myResult
+echo
+echo "Result: (Should be none)"
 diff myResult goodResult
 
 echo
 z827 short.txt.z827
 od -t x1 testing/short.txt > goodResult
 od -t x1 short.txt > myResult
+echo
+echo "Result: (Should be none)"
 diff myResult goodResult
 
 echo
+echo "________________________"
 echo "TEST 2:"
 z827 shake.txt
 
 echo
 z827 shake.txt.z827
+echo
+echo "Result: (Should be none)"
 diff shake.txt testing/shake.txt
 
 echo
+echo "________________________"
+echo "TEST 3:"
+z827 words.txt
+
+echo
+z827 words.txt.z827
+echo
+echo "Result: (Should be none)"
+diff words.txt testing/words.txt
+
+echo
+echo "________________________"
 echo "Clean UP:"
 rm myResult
 rm goodResult
 rm short.txt
 rm shake.txt
+rm words.txt
 echo Done.
 echo
