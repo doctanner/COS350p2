@@ -17,4 +17,5 @@ clean:
 
 erase:
 	rm -f *.o
+	rm -f testResult
 	rm -f z827
