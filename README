@@ -4,6 +4,11 @@ James Tanner
 COS 350: Systems Programming
 Program 2
 
+MAN PAGE:
+The command "man ./manpage" will display the attached manpage in standard
+format. This command is also included in the makefile and can be executed with
+the command "make man".
+
 CONTENTS:
 This directory should contain the following:
 * z827.c
