@@ -17,6 +17,19 @@ Decompressed files are saved to the same filepath with ".z827" removed.
 If the compression or decompression succeeds, the original file is
 deleted.
 
+z827 compresses files by deleting the high order 8th bit, which is always
+0 for ACII characters. This is done by taking a byte into a buffer and 
+shifting the next byte to the left, overriding the high order bit.
+
+z827 decompresses files by undoing the compression operation. It takes
+four characters at a time into a buffer. It masks the high order bit
+and outputs the first character. Then, using shifting operations, the first
+character is pushed off the end of the buffer and the second character is 
+pushed into place. When three of the four characters have been written,
+the buffer is refilled. This continues while there are bits in the buffer
+to be written and the amount written to output is less than the size
+of the original file. 
+
 .SH EXAMPLES
 z827 myText.txt - Compress the file "myText.txt".
 
@@ -25,9 +38,19 @@ z827 mytext.txt.z827 - Decompress the resulting file.
 .SH OPTIONS
 No options available.
 
+.SH NOTES
+z827 only handles ASCII characters.
+
 .SH BUGS
 No known bugs.
 
-.SH AUTHOR
+.SH MESSAGES AND EXIT CALLS
+z827 will throw an error if no file is given or if there are too many 
+arguments given. 
+An error is thrown if the file does not exist or can't 
+be opened. 
 
-James Tanner
+.SH AUTHOR
+James Tanner 
+
+Rachel Champoux
