@@ -13,7 +13,7 @@ static char NON_ASCII_MASK = 0b10000000;
 static char ASCII_MASK = 0b01111111;
 
 unsigned int compress (int, int);
-unsigned int uncompress (int, int);
+unsigned int decompress (int, int);
 
 main (int argc, char** argv){
     if (argc !=  2){
@@ -63,7 +63,7 @@ main (int argc, char** argv){
         destPath[argLen-EXT_LEN] = 0;
 
         // Set function to use.
-        process = uncompress;
+        process = decompress;
     }
 
     // Open source file.
@@ -188,14 +188,14 @@ unsigned int compress (int fdSource, int fdDest){
 	return bytesWritten;
 }
 
-/* unsigned int uncompress(int, int)
- * Attempts to uncompress the given source file into the
+/* unsigned int decompress(int, int)
+ * Attempts to decompress the given source file into the
  * given dest file by reversing the z827 algorithm.
  *
  * On completion, returns the total number of bytes written.
- * If an error is encountered or file cannot be uncompressed,
+ * If an error is encountered or file cannot be decompressed,
  * returns 0. */
-unsigned int uncompress (int fdSource, int fdDest){
+unsigned int decompress (int fdSource, int fdDest){
 	// Counters:
     int currBytesLoaded = 0;
     unsigned int bytesWritten = 0;
@@ -206,7 +206,7 @@ unsigned int uncompress (int fdSource, int fdDest){
     /* Note: inBuf is an integer buffer that will hold four
      * bytes of data. inLbits points to the first byte; as
      * such, it should always contain the next byte to be 
-     * uncompressed.
+     * decompressed.
      * inHBits points to the start of the remaining bytes.
      * It us used to refill the buffer from the file.
      * outBuf is used to decompress a char from seven bits
@@ -250,7 +250,7 @@ unsigned int uncompress (int fdSource, int fdDest){
    		}
 	}
 
-	// Ensure full uncompression.
+	// Ensure full decompression.
 	if (bytesWritten != origBytes) return 0;
 
 	// Return total number of bytes written to file.
