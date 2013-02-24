@@ -12,9 +12,8 @@ test: z827
 	more testResult
 
 man: manSource
-	nroff -man manSource > z827.1
-	more z827.1
-
+   man ./manpage
+   
 clean:
 	rm -f *.o
 	rm -f testResult
