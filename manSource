@@ -1,0 +1,33 @@
+.TH Z827 1 LOCAL
+
+.SH NAME
+
+z827 - compress and decompress text files.
+
+.SH SYNOPSIS
+
+.B z827 "filepath"
+
+.SH AVAILABILITY
+
+All UNIX flavors
+
+.SH DESCRIPTION
+
+z827 uses the z827 algorithm to compress and decompress text files.
+If the filepath does not end in ".z827", the file is passed through
+the compression algorithm. If it does, then the file is passed through
+decompression.
+
+Compressed files saved to the same filepath appended with ".z827".
+Decompressed files are saved to the same filepath with ".z827" removed.
+If the compression or decompression succeeds, the original file is
+deleted.
+
+.SH OPTIONS
+
+No options available.
+
+.SH AUTHOR
+
+James Tanner

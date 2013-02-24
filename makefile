@@ -11,6 +11,10 @@ test: z827
 	testing/ztest | tee testResult
 	more testResult
 
+man: manSource
+	nroff -man manSource > z827.1
+	more z827.1
+
 clean:
 	rm -f *.o
 	rm -f testResult
