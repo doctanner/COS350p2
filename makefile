@@ -1,3 +1,7 @@
+# AUTHOR: James Tanner
+# COURSE: COS 350 - Systems Programming
+# PURPOSE: Program 2
+
 COMP=gcc
 FLAGS=-g
 

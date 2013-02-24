@@ -1,6 +1,16 @@
-AUTHOR:
-James Tanner
-- for: -
+AUTHORS:
+James Tanner: z827.c, testing suite, makefile, and README.
+James Tanner and Rachel Champoux: man page
+
+Note: (Tanner) Rachel and I intended to work on this project together.
+However, scheduling conflicts meant we couldn't work on the code together. So,
+we wrote the program itself separately, but with collaboration. As such, many
+parts of the code are quite similar.
+
+The man page was written collaboratively.
+The testing suite and make file are my work.
+
+PURPOSE:
 COS 350: Systems Programming
 Program 2
 
