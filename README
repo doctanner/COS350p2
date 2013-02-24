@@ -1,17 +1,34 @@
-AUTHOR:
-James Tanner
-- for: -
+AUTHORS:
+James Tanner: z827.c, testing suite, makefile, and README.
+James Tanner and Rachel Champoux: man page
+
+Note: (Tanner) Rachel and I intended to work on this project together.
+However, scheduling conflicts meant we couldn't work on the code together. So,
+we wrote the program itself separately, but with collaboration. As such, many
+parts of the code are quite similar.
+
+The man page was written collaboratively.
+The testing suite and make file are my work.
+
+PURPOSE:
 COS 350: Systems Programming
 Program 2
+
+MAN PAGE:
+The command "man ./manpage" will display the attached manpage in standard
+format. This command is also included in the makefile and can be executed with
+the command "make man".
 
 CONTENTS:
 This directory should contain the following:
 * z827.c
 * makefile
+* manpage
 * README
 * testing/shake.txt
 * testing/short.txt
 * testing/short.txt.z827.referenceSoln
+* testing/words.txt
 * testing/ztest
 
 TESTING:
@@ -30,7 +47,8 @@ changes have been made.
 MAKEFILE:
 The makefile provides the following commands:
 * make: Compiles the application and dependancies.
-* make test: compiles the application and runs the included test script.
+* make test: Compiles the application and runs the included test script.
+* make man: Outputs the attached man page.
 * make clean: Removes object files created during compilation, but leaves
   executable intact. Also removes testResult file from "make test".
 * make erase: Removes object files and executable.

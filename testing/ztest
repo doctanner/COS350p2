@@ -1,3 +1,7 @@
+#AUTHOR: James Tanner
+#COURSE: COS 350 - Systems Programming
+#PURPOSE: Program 2
+
 echo
 echo "z827 Testing Script"
 echo "- James Tanner 2012"
@@ -55,8 +59,14 @@ echo "_________________________"
 echo "Clean UP:"
 rm myResult
 rm goodResult
+
 rm short.txt
 rm shake.txt
 rm words.txt
+
+rm short.txt.z827
+rm shake.txt.z827
+rm words.txt.z827
+
 echo Done.
 echo
