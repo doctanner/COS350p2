@@ -11,8 +11,8 @@ test: z827
 	testing/ztest | tee testResult
 	more testResult
 
-man: manSource
-   man ./manpage
+man: manpage
+	man ./manpage
    
 clean:
 	rm -f *.o
