@@ -14,6 +14,7 @@ z827.o: z827.c
 	rm -f writeUp
 
 testResult: z827
+	clear
 	support/ztest 2>&1 | tee testResult
 
 test: testResult

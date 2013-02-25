@@ -11,9 +11,7 @@ echo "
 _______________________________________________________________________________
 MAN PAGE:
 "
-man -Tutf8 ./manpage > manOut
-cat manOut
-rm manOut
+man -Tutf8 --nh ./manpage | cat
 
 # Display code
 echo "

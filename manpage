@@ -4,7 +4,8 @@
 z827 - compress and decompress text files.
 
 .SH SYNOPSIS
-.B z827 "filepath"
+.B z827 
+.I filepath
 
 .SH DESCRIPTION
 z827 uses the z827 algorithm to compress and decompress text files.
