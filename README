@@ -34,7 +34,7 @@ This directory should contain the following:
 
 The following files can be genrated:
 * writeUp - Made by "make writeup"
-* testResult - Made by "make test" or "make testResult
+* testResult - Made by "make test" or "make testResult"
 
 TESTING:
 The support directory contains a script and reference files for use in testing.
@@ -53,8 +53,12 @@ MAKEFILE:
 The makefile provides the following commands:
 * make: Compiles the application and dependancies.
 * make testResult: Compiles the application and runs the included test script.
-* make test: Displays the test results from make testResult
+* make test: Displays the test results from make testResult, generating new
+  results if necessary.
 * make man: Outputs the attached man page.
+* make writeUp: Generates and displays the writeUp document.
+* make print: Prints the last writeUp file using a2ps to the default printer.
+  If no writeUp exists, this command generates a new one.
 * make clean: Removes object files created during compilation, but leaves
   executable intact.
 * make erase: Resets project directory by erasing object files, executable,
