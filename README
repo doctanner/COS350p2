@@ -4,11 +4,11 @@ James Tanner and Rachel Champoux: man page
 
 Note: (Tanner) Rachel and I intended to work on this project together.
 However, scheduling conflicts meant we couldn't work on the code together. So,
-we wrote the program itself separately, but with collaboration. As such, many
+we wrote the program itself separately but with collaboration. As such, many
 parts of the code are quite similar.
 
 The man page was written collaboratively.
-The testing suite and make file are my work.
+The testing suite, writeup generator, and makefile are my work.
 
 PURPOSE:
 COS 350: Systems Programming
@@ -25,31 +25,59 @@ This directory should contain the following:
 * makefile
 * manpage
 * README
-* testing/shake.txt
-* testing/short.txt
-* testing/short.txt.z827.referenceSoln
-* testing/words.txt
-* testing/ztest
+* support/writeScript
+* support/shake.txt
+* support/short.txt
+* support/short.txt.z827.referenceSoln
+* support/words.txt
+* support/ztest
+
+The following files can be genrated:
+* writeUp - Made by "make writeup"
+* testResult - Made by "make test" or "make testResult
 
 TESTING:
-The testing directory contains a script and reference files for use in testing.
+The support directory contains a script and reference files for use in testing.
 When running the test script, the working directory must be the root project
 directory. (The directory this file is located in.)
 It can be executed using either of the following commands:
 
-   "testing/ztest"
+   "support/ztest"
       - or -
    "make test"
 
-Note: The latter is recommended, as it also recompiles the executable if any
+Note: The latter is recommended as it also recompiles the executable if any
 changes have been made.
 
 MAKEFILE:
 The makefile provides the following commands:
 * make: Compiles the application and dependancies.
-* make test: Compiles the application and runs the included test script.
+* make testResult: Compiles the application and runs the included test script.
+* make test: Displays the test results from make testResult
 * make man: Outputs the attached man page.
 * make clean: Removes object files created during compilation, but leaves
-  executable intact. Also removes testResult file from "make test".
-* make erase: Removes object files and executable.
+  executable intact.
+* make erase: Resets project directory by erasing object files, executable,
+  testResult and writeUp.
 
+DEVIATIONS:
+z827 deviates from the specification only in that it prints some output
+to stdout while it is running. Specifically, it prints whether it is running
+in compression or decompression mode and alerts when the process is complete.
+
+EXTRA FEATURES:
+The program itself does not provide any additional functionality not included
+in the specification. However, some additional supporting features are
+provided, including:
+* makefile
+* testing suite
+* written part generator
+Note: all of these features are accessable via "make [option]" commands.
+(See "MAKEFILE" above.)
+
+BUGS:
+The formatted man page is not compatable with a2ps. Specifically, it appears
+that the generated line length is two characters too long for a2ps' page width.
+
+See man page for any known bugs/issues with the z827 program.
+The man page may be accessed via "man ./manpage" or "make manpage" commands.
