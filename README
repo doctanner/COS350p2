@@ -1,3 +1,26 @@
+SETUP: - IMPORTANT -
+This variation of the z827 project is flattened to one directory for use with
+the "submit" program. Code and executable file are available without unpacking,
+but support features will not be functional.
+
+Please run the SETUP script directly or with the command "make" to properly
+package the support materials. Once the SETUP script runs, the directory should
+be in the state described in the following sections of this README.
+
+If the script fails for any reason, the support material can be unpacked
+manually using the following commands:
+
+mkdir support
+mv *.txt* support/
+mv *Script support/
+rm makefile
+mv makefile.PACK makefile
+
+This makes the support directory, copies the test source files, copies the
+scripts, removes the current setup makefile, and unpacks the z827 makefile.
+
+
+_______________________________________________________________________________
 AUTHORS:
 James Tanner: z827.c, testing suite, makefile, and README.
 James Tanner and Rachel Champoux: man page

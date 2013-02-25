@@ -1,5 +1,5 @@
 # AUTHOR: James Tanner
 # Setup makefile
 
-SETUP:
+setup:
 	SETUP
