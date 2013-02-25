@@ -15,9 +15,11 @@ mv *.txt* support/
 mv *Script support/
 rm makefile
 mv makefile.PACK makefile
+chmod +x support/*Script
 
 This makes the support directory, copies the test source files, copies the
 scripts, removes the current setup makefile, and unpacks the z827 makefile.
+Finally, it makes the scripts executable.
 
 
 _______________________________________________________________________________
