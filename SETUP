@@ -3,15 +3,14 @@ mkdir support
 mv *.txt* support/
 mv *Script support/
 
+echo "Making scripts executable"
+chmod +x support/*Script
+
 echo "Unpacking makefile"
 mv makefile.PACK makefile
 
 echo "Unpacking README"
 mv readme.PACK README
-
-
-echo "Making scripts executable"
-chmod +x support/*Script
 
 echo "Deleting SETUP script."
 rm -f SETUP
