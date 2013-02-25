@@ -39,10 +39,13 @@ z827 mytext.txt.z827 - Decompress the resulting file.
 No options available.
 
 .SH NOTES
-z827 only handles ASCII characters.
+z827 only compressed files consisting entirely of ASCII characters.
 
 .SH BUGS
-No known bugs.
+No known bugs. It is, however, possible to compress non-ASCII files, provided
+the 8th bit of all bytes in the files is 0. While the resulting file can be
+decompressed as normal, this is considered incorrect behavior and can not be
+gauranteed.
 
 .SH MESSAGES AND EXIT CALLS
 z827 will throw an error if no file is given or if there are too many 
@@ -50,7 +53,7 @@ arguments given.
 An error is thrown if the file does not exist or can't 
 be opened. 
 
-.SH AUTHOR
-James Tanner 
+.SH AUTHORS
+Manpage written by James Tanner and Rachel Champoux.
 
-Rachel Champoux
+z827 program written by James Tanner.

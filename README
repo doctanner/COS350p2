@@ -4,11 +4,11 @@ James Tanner and Rachel Champoux: man page
 
 Note: (Tanner) Rachel and I intended to work on this project together.
 However, scheduling conflicts meant we couldn't work on the code together. So,
-we wrote the program itself separately, but with collaboration. As such, many
+we wrote the program itself separately but with collaboration. As such, many
 parts of the code are quite similar.
 
 The man page was written collaboratively.
-The testing suite and make file are my work.
+The testing suite, writeup generator, and makefile are my work.
 
 PURPOSE:
 COS 350: Systems Programming
@@ -46,7 +46,7 @@ It can be executed using either of the following commands:
       - or -
    "make test"
 
-Note: The latter is recommended, as it also recompiles the executable if any
+Note: The latter is recommended as it also recompiles the executable if any
 changes have been made.
 
 MAKEFILE:
@@ -63,8 +63,7 @@ The makefile provides the following commands:
 DEVIATIONS:
 z827 deviates from the specification only in that it prints some output
 to stdout while it is running. Specifically, it prints whether it is running
-in compression or decompression mode as well as the source and destination
-file paths.
+in compression or decompression mode and alerts when the process is complete.
 
 EXTRA FEATURES:
 The program itself does not include any additional functionality not
