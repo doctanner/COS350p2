@@ -20,9 +20,12 @@ testResult: z827
 test: testResult
 	more testResult
 
-writeup: z827 testResult
+writeUp: z827 testResult
 	support/writeScript 2>&1 | tee writeUp
 	more writeUp
+
+print: writeUp
+	a2ps writeUp
 
 man: manpage
 	man ./manpage
