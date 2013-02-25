@@ -15,7 +15,7 @@ z827.o: z827.c
 
 testResult: z827
 	clear
-	support/ztest 2>&1 | tee testResult
+	support/testScript 2>&1 | tee testResult
 
 test: testResult
 	more testResult
