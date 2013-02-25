@@ -11,22 +11,24 @@ z827: z827.o
 z827.o: z827.c
 	gcc -c $(FLAGS) z827.c
 
-test: z827
-	testing/ztest | tee testResult
+testResult: z827
+	support/ztest | tee testResult
+
+test: testResult
 	more testResult
 
 writeup: z827
-	./writeScript > JTWriteUp 2>&1
-	more JTWriteUp
+	support/writeScript 2>&1 | tee writeUp
+	more writeUp
 
 man: manpage
 	man ./manpage
    
 clean:
 	rm -f *.o
-	rm -f testResult
 
 erase:
 	rm -f *.o
 	rm -f testResult
+	rm -f writeUp
 	rm -f z827

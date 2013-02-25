@@ -25,19 +25,24 @@ This directory should contain the following:
 * makefile
 * manpage
 * README
-* testing/shake.txt
-* testing/short.txt
-* testing/short.txt.z827.referenceSoln
-* testing/words.txt
-* testing/ztest
+* support/writeScript
+* support/shake.txt
+* support/short.txt
+* support/short.txt.z827.referenceSoln
+* support/words.txt
+* support/ztest
+
+The following files can be genrated:
+* writeUp - Made by "make writeup"
+* testResult - Made by "make test" or "make testResult
 
 TESTING:
-The testing directory contains a script and reference files for use in testing.
+The support directory contains a script and reference files for use in testing.
 When running the test script, the working directory must be the root project
 directory. (The directory this file is located in.)
 It can be executed using either of the following commands:
 
-   "testing/ztest"
+   "support/ztest"
       - or -
    "make test"
 
@@ -47,9 +52,28 @@ changes have been made.
 MAKEFILE:
 The makefile provides the following commands:
 * make: Compiles the application and dependancies.
-* make test: Compiles the application and runs the included test script.
+* make testResult: Compiles the application and runs the included test script.
+* make test: Displays the test results from make testResult
 * make man: Outputs the attached man page.
 * make clean: Removes object files created during compilation, but leaves
   executable intact. Also removes testResult file from "make test".
 * make erase: Removes object files and executable.
 
+DEVIATIONS:
+z827 deviates from the specification only in that it prints some output
+to stdout while it is running. Specifically, it prints whether it is running
+in compression or decompression mode as well as the source and destination
+file paths.
+
+EXTRA FEATURES:
+The program itself does not include any additional functionality not
+included in the specification. However, additional supporting features are
+included along with it including:
+* makefile
+* testing suite
+* written part generator.
+Note: all of these features are accessable via "make [option]" commands.
+
+BUGS:
+See man page for any currently known bugs/issues.
+The man page may be accessed via "man ./manpage" or "make manpage" commands.
