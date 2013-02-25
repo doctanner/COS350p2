@@ -10,6 +10,8 @@ z827: z827.o
 
 z827.o: z827.c
 	gcc -c $(FLAGS) z827.c
+	rm -f testResult
+	rm -f writeUp
 
 testResult: z827
 	support/ztest 2>&1 | tee testResult
@@ -29,6 +31,7 @@ clean:
 
 erase:
 	rm -f *.o
-	rm -f testResult
+	rm -f *Result
+	rm -f *.txt*
 	rm -f writeUp
 	rm -f z827

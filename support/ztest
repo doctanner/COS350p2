@@ -2,6 +2,7 @@
 #COURSE: COS 350 - Systems Programming
 #PURPOSE: Program 2
 
+clear
 echo
 echo "z827 Testing Script"
 echo "- James Tanner 2012"
@@ -17,68 +18,70 @@ echo Done.
 echo
 echo "_________________________"
 echo "TEST 1:"
-z827 short.txt
+z827 short.txt 2> T1p1ErrResult
 od -t x1 support/short.txt.z827.referenceSoln > goodResult
-od -t x1 short.txt.z827 > myResult
+od -t x1 short.txt.z827 > myResult 2> T1p1ErrResult
 echo
 echo "Result:"
 diff myResult goodResult > totResult
-if [ -s totRsult ]
+if [ -s totRsult -o -s T1p1ErrResult ]
    then
       echo "FAILED!"
+      echo "Check T1p1ErrResult for errors."
    else
       echo "Passed"
+      rm -f T1p1ErrResult
 fi
 
 echo
-z827 short.txt.z827
+z827 short.txt.z827 2> T1p2ErrResult
 od -t x1 support/short.txt > goodResult
-od -t x1 short.txt > myResult
-echo
-diff myResult goodResult > totResult
+od -t x1 short.txt > myResult 2>&1
+diff myResult goodResult > totResult 2>&1
 echo "Result:"
-diff myResult goodResult > totResult
-if [ -s totRsult ]
+if [ -s totRsult -o -s T1p2ErrResult ]
    then
       echo "FAILED!"
+      echo "Check T1p2ErrResult for errors."
    else
       echo "Passed"
+      rm -f T1p2ErrResult
 fi
 
 echo
 echo "_________________________"
 echo "TEST 2:"
-z827 shake.txt
+z827 shake.txt 2> T2p1ErrResult
 
 echo
-z827 shake.txt.z827
-echo
-diff shake.txt support/shake.txt > totResult
+z827 shake.txt.z827 2> T2p2ErrResult
+diff shake.txt support/shake.txt > totResult 2>&1
 echo "Result:"
-diff myResult goodResult > totResult
-if [ -s totRsult ]
+if [ -s totRsult -o -s T2p1ErrResult -o -s T2p2ErrResult ]
    then
       echo "FAILED!"
+      echo "Check T2p1ErrResult and T2p2ErrResult for errors."
    else
       echo "Passed"
+      rm -f T2*ErrResult
 fi
 
 echo
 echo "_________________________"
 echo "TEST 3:"
-z827 words.txt
+z827 words.txt 2> T3p1ErrResult
 
 echo
-z827 words.txt.z827
-echo
-diff words.txt support/words.txt
+z827 words.txt.z827 2> T3p2ErrResult
+diff words.txt support/words.txt > totResult 2>&1
 echo "Result:"
-diff myResult goodResult > totResult
-if [ -s totRsult ]
+if [ -s totRsult -o -s T3p1ErrResult -o -s T3p2ErrResult ]
    then
       echo "FAILED!"
+      echo "Check T3p1ErrResult T3p2ErrResult for errors."
    else
       echo "Passed"
+      rm -f T3*ErrResult
 fi
 
 echo
