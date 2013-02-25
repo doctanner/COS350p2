@@ -76,5 +76,8 @@ Note: all of these features are accessable via "make [option]" commands.
 (See "MAKEFILE" above.)
 
 BUGS:
-See man page for any currently known bugs/issues.
+The formatted man page is not compatable with a2ps. Specifically, it appears
+that the generated line length is two characters too long for a2ps' page width.
+
+See man page for any known bugs/issues with the z827 program.
 The man page may be accessed via "man ./manpage" or "make manpage" commands.
