@@ -15,6 +15,10 @@ test: z827
 	testing/ztest | tee testResult
 	more testResult
 
+writeup: z827
+	./writeScript > JTWriteUp 2>&1
+	more JTWriteUp
+
 man: manpage
 	man ./manpage
    

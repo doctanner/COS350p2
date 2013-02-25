@@ -1,0 +1,86 @@
+# Display name and information
+echo "JAMES TANNER"
+echo "_______________________________________________________________________________"
+echo "Program 2 - README:"
+echo
+cat README
+
+# Display code
+echo
+echo "_______________________________________________________________________________"
+echo "CODE:"
+echo
+cat z827.c
+
+# Display makefile
+echo
+echo "_______________________________________________________________________________"
+echo "MAKEFILE:"
+echo
+cat makefile
+
+# Display testing results
+echo
+echo "_______________________________________________________________________________"
+echo "TESTING RESULTS:"
+echo "Note: Lines starting with \"$> \" are commands.
+echo "All other lines are output.
+echo "Also, due to buffering, stdout and stderr outputs may be out of order."
+echo
+
+# Copy files to working directory
+echo "$> cp testing/short.txt ./short.txt"
+cp testing/short.txt ./short.txt
+
+echo "$> cp testing/shake.txt ./shake.txt"
+cp testing/shake.txt ./shake.txt
+
+echo "$> cp testing/short.txt ./short.orig"
+cp testing/short.txt ./short.orig
+
+echo "$> cp testing/shake.txt ./shake.orig"
+cp testing/shake.txt ./shake.orig
+
+# Compress
+echo
+echo "$> z827 short.txt"
+z827 short.txt
+echo
+echo "$> z827 shake.txt"
+z827 shake.txt
+
+# Check if files were erased.
+echo
+echo "$> ls -l | grep .txt"
+ls -l | grep .txt
+
+# Decompress
+echo
+echo "$> z827 short.txt.z827"
+z827 short.txt.z827
+echo
+echo "$> z827 shake.txt.z827"
+z827 shake.txt.z827
+
+# Check if files were erased.
+echo
+echo "$> ls -l | grep .txt"
+ls -l | grep .txt
+
+# Compare with originals.
+echo
+echo "$> cmp short.txt short.orig"
+cmp short.txt short.orig
+echo
+echo "$> cmp shake.txt shake.orig"
+cmp shake.txt shake.orig
+
+# Check graceful fail on missing file.
+echo
+echo "$> z827 missingfile"
+z827 missingfile
+echo
+
+# Clean up from script.
+rm *.txt*
+rm *.orig
