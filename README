@@ -20,12 +20,13 @@ mkdir support
 mv *.txt* support/
 mv *Script support/
 mv makefile.PACK makefile
-mv readme.PACK README
 chmod +x support/*Script
+mv readme.PACK README
 
 This makes the support directory, copies the test source files, and copies the
-scripts. It then replaces the SETUP makefile and README with the z827 makefile
-and README. Finally, it makes the scripts executable.
+scripts. It then replaces the SETUP makefile with the z827 makefile. Next, it
+makes the scripts executable. Finally, it replaces this README with the z827
+README.
 
 Additionally, the script erases itself when complete to prevent accidentally
 running it again. This leaves the directory in exactly the state described in
