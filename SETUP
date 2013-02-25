@@ -8,3 +8,5 @@ mv makefile.PACK makefile
 
 echo "Deleting SETUP script."
 rm -f SETUP
+
+echo "Done."
