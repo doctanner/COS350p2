@@ -1,0 +1,8 @@
+echo "Packaging support directory."
+mkdir support
+mv *.txt* support/
+mv *Script support/
+
+echo "Unwrapping makefile"
+mv makefile.PACK makefile
+
