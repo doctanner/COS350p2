@@ -6,7 +6,7 @@ mv *Script support/
 echo "Unpacking makefile"
 mv makefile.PACK makefile
 
-echo "Unpacking README
+echo "Unpacking README"
 mv readme.PACK README
 
 
