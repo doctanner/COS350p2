@@ -23,9 +23,8 @@ cat makefile
 echo
 echo "_______________________________________________________________________________"
 echo "TESTING RESULTS:"
-echo "Note: Lines starting with \"$> \" are commands.
-echo "All other lines are output.
-echo "Also, due to buffering, stdout and stderr outputs may be out of order."
+echo "Note: Lines starting with \"$> \" are commands. All other lines are output.
+Also, due to buffering, stdout and stderr outputs may be out of order."
 echo
 
 # Copy files to working directory
