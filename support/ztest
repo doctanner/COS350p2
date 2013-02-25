@@ -21,16 +21,29 @@ z827 short.txt
 od -t x1 support/short.txt.z827.referenceSoln > goodResult
 od -t x1 short.txt.z827 > myResult
 echo
-echo "Result: (Should be none)"
-diff myResult goodResult
+echo "Result:"
+diff myResult goodResult > totResult
+if [ -s totRsult ]
+   then
+      echo "FAILED!"
+   else
+      echo "Passed"
+fi
 
 echo
 z827 short.txt.z827
 od -t x1 support/short.txt > goodResult
 od -t x1 short.txt > myResult
 echo
-echo "Result: (Should be none)"
-diff myResult goodResult
+diff myResult goodResult > totResult
+echo "Result:"
+diff myResult goodResult > totResult
+if [ -s totRsult ]
+   then
+      echo "FAILED!"
+   else
+      echo "Passed"
+fi
 
 echo
 echo "_________________________"
@@ -40,8 +53,15 @@ z827 shake.txt
 echo
 z827 shake.txt.z827
 echo
-echo "Result: (Should be none)"
-diff shake.txt support/shake.txt
+diff shake.txt support/shake.txt > totResult
+echo "Result:"
+diff myResult goodResult > totResult
+if [ -s totRsult ]
+   then
+      echo "FAILED!"
+   else
+      echo "Passed"
+fi
 
 echo
 echo "_________________________"
@@ -51,22 +71,30 @@ z827 words.txt
 echo
 z827 words.txt.z827
 echo
-echo "Result: (Should be none)"
 diff words.txt support/words.txt
+echo "Result:"
+diff myResult goodResult > totResult
+if [ -s totRsult ]
+   then
+      echo "FAILED!"
+   else
+      echo "Passed"
+fi
 
 echo
 echo "_________________________"
 echo "Clean UP:"
-rm myResult
-rm goodResult
+rm -f myResult
+rm -f goodResult
+rm -f totResult
 
-rm short.txt
-rm shake.txt
-rm words.txt
+rm -f short.txt
+rm -f shake.txt
+rm -f words.txt
 
-rm short.txt.z827
-rm shake.txt.z827
-rm words.txt.z827
+rm -f short.txt.z827
+rm -f shake.txt.z827
+rm -f words.txt.z827
 
 echo Done.
 echo

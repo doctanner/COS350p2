@@ -12,7 +12,7 @@ z827.o: z827.c
 	gcc -c $(FLAGS) z827.c
 
 testResult: z827
-	support/ztest | tee testResult
+	support/ztest 2>&1 | tee testResult
 
 test: testResult
 	more testResult
