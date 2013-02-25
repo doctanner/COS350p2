@@ -11,7 +11,7 @@ echo "
 _______________________________________________________________________________
 MAN PAGE:
 "
-man ./manpage > manOut
+man -Tutf8 ./manpage > manOut
 cat manOut
 rm manOut
 
