@@ -29,6 +29,9 @@ man: manpage
    
 clean:
 	rm -f *.o
+	rm -f *Result
+	rm -f *.txt*
+	
 
 erase:
 	rm -f *.o

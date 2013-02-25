@@ -17,8 +17,9 @@ unsigned int decompress (int, int);
 
 main (int argc, char** argv){
     if (argc !=  2){
-        fprintf(stderr, "Arguments should be in the form \"%s [file].\n", argv[0]);
-        exit(-1);
+      fprintf(stderr,
+         "Arguments should be in the form \"%s [file].\n", argv[0]);
+      exit(-1);
     }
 
     // File variables:
@@ -93,14 +94,14 @@ main (int argc, char** argv){
     	// Dest closed successfully. Remove source.
 		if (unlink(srcPath)!=0){
 		fprintf(stderr, "Could not remove source file:\n");
-		fprintf(stderr, "\tCompression or decompression is complete.\n");
+		fprintf(stderr, "\tProcessing is complete.\n");
 		fprintf(stderr, "\tSource file was not deleted.\n");
 		perror("Error code is as follows:\n");
 		}
 	}
 	else{
 		fprintf(stderr, "Could not close dest file:\n");
-		fprintf(stderr, "\tCompression or decompression may not be complete.\n");
+		fprintf(stderr, "\tProcessing may not be complete.\n");
 		fprintf(stderr, "\tSource file was not deleted.\n");
 		perror("Error code is as follows:\n");
 	}
