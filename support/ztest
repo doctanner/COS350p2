@@ -38,6 +38,7 @@ z827 short.txt.z827 2> T1p2ErrResult
 od -t x1 support/short.txt > goodResult
 od -t x1 short.txt > myResult 2>&1
 diff myResult goodResult > totResult 2>&1
+echo
 echo "Result:"
 if [ -s totRsult -o -s T1p2ErrResult ]
    then
@@ -56,6 +57,7 @@ z827 shake.txt 2> T2p1ErrResult
 echo
 z827 shake.txt.z827 2> T2p2ErrResult
 diff shake.txt support/shake.txt > totResult 2>&1
+echo
 echo "Result:"
 if [ -s totRsult -o -s T2p1ErrResult -o -s T2p2ErrResult ]
    then
@@ -74,6 +76,7 @@ z827 words.txt 2> T3p1ErrResult
 echo
 z827 words.txt.z827 2> T3p2ErrResult
 diff words.txt support/words.txt > totResult 2>&1
+echo
 echo "Result:"
 if [ -s totRsult -o -s T3p1ErrResult -o -s T3p2ErrResult ]
    then

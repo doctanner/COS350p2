@@ -123,6 +123,7 @@ main (int argc, char** argv){
 unsigned int compress (int fdSource, int fdDest){
    // Report operation.
    printf("Compressing...\n");
+   fflush(stdout);
 
 	// Counters:
     int currBytesLoaded = 0;
@@ -195,6 +196,7 @@ unsigned int compress (int fdSource, int fdDest){
 unsigned int decompress (int fdSource, int fdDest){
    // Report operation.
    printf("Decompressing...\n");
+   fflush(stdout);
 
 	// Counters:
     int currBytesLoaded = 0;
