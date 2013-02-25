@@ -66,13 +66,14 @@ to stdout while it is running. Specifically, it prints whether it is running
 in compression or decompression mode and alerts when the process is complete.
 
 EXTRA FEATURES:
-The program itself does not include any additional functionality not
-included in the specification. However, additional supporting features are
-included along with it including:
+The program itself does not provide any additional functionality not included
+in the specification. However, some additional supporting features are
+provided, including:
 * makefile
 * testing suite
-* written part generator.
+* written part generator
 Note: all of these features are accessable via "make [option]" commands.
+(See "MAKEFILE" above.)
 
 BUGS:
 See man page for any currently known bugs/issues.
