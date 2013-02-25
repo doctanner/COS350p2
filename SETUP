@@ -6,3 +6,5 @@ mv *Script support/
 echo "Unwrapping makefile"
 mv makefile.PACK makefile
 
+Echo "Deleting SETUP script."
+rm -f SETUP
