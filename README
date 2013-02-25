@@ -56,8 +56,9 @@ The makefile provides the following commands:
 * make test: Displays the test results from make testResult
 * make man: Outputs the attached man page.
 * make clean: Removes object files created during compilation, but leaves
-  executable intact. Also removes testResult file from "make test".
-* make erase: Removes object files and executable.
+  executable intact.
+* make erase: Resets project directory by erasing object files, executable,
+  testResult and writeUp.
 
 DEVIATIONS:
 z827 deviates from the specification only in that it prints some output

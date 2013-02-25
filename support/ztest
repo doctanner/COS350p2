@@ -9,16 +9,16 @@ echo "- James Tanner 2012"
 echo
 echo "_________________________"
 echo "SET UP:"
-cp testing/short.txt ./
-cp testing/shake.txt ./
-cp testing/words.txt ./
+cp support/short.txt ./
+cp support/shake.txt ./
+cp support/words.txt ./
 echo Done.
 
 echo
 echo "_________________________"
 echo "TEST 1:"
 z827 short.txt
-od -t x1 testing/short.txt.z827.referenceSoln > goodResult
+od -t x1 support/short.txt.z827.referenceSoln > goodResult
 od -t x1 short.txt.z827 > myResult
 echo
 echo "Result: (Should be none)"
@@ -26,7 +26,7 @@ diff myResult goodResult
 
 echo
 z827 short.txt.z827
-od -t x1 testing/short.txt > goodResult
+od -t x1 support/short.txt > goodResult
 od -t x1 short.txt > myResult
 echo
 echo "Result: (Should be none)"
@@ -41,7 +41,7 @@ echo
 z827 shake.txt.z827
 echo
 echo "Result: (Should be none)"
-diff shake.txt testing/shake.txt
+diff shake.txt support/shake.txt
 
 echo
 echo "_________________________"
@@ -52,7 +52,7 @@ echo
 z827 words.txt.z827
 echo
 echo "Result: (Should be none)"
-diff words.txt testing/words.txt
+diff words.txt support/words.txt
 
 echo
 echo "_________________________"

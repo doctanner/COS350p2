@@ -34,7 +34,6 @@ echo "
 _______________________________________________________________________________
 TESTING RESULTS
 Note: Lines starting with \"$> \" are commands. All other lines are output.
-Also, due to buffering, stdout and stderr outputs may be out of order.
 "
 
 # Copy files to working directory
@@ -93,3 +92,10 @@ echo
 # Clean up from script.
 rm *.txt*
 rm *.orig
+
+# Custom testing:
+echo "
+_______________________________________________________________________________
+CUSTOM TESTING SCRIPT:
+"
+cat testResult

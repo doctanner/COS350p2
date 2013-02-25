@@ -17,7 +17,7 @@ testResult: z827
 test: testResult
 	more testResult
 
-writeup: z827
+writeup: z827 testResult
 	support/writeScript 2>&1 | tee writeUp
 	more writeUp
 

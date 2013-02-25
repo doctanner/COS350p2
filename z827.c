@@ -36,8 +36,6 @@ main (int argc, char** argv){
 
     // Determine if we must run in compression or decompression mode:
     if (offset < 0 || strcmp(argv[1] + offset, FILE_EXT) != 0){
-        printf("Compressing...\n");
-
         // Set source.
         srcPath = malloc(sizeof(char) * (argLen+1));
         strncpy(srcPath, argv[1], argLen);
@@ -51,8 +49,6 @@ main (int argc, char** argv){
         process = compress;
 
     } else{
-        printf("Decompressing...\n");
-
         // Set source.
         srcPath = malloc(sizeof(char) * (argLen+1));
         strncpy(srcPath, argv[1], argLen);
@@ -67,7 +63,6 @@ main (int argc, char** argv){
     }
 
     // Open source file.
-    printf("Source: %s\n", srcPath);
     fdSource = open(srcPath, O_RDONLY);
     if (fdSource < 0){
         fprintf(stderr, "Could not open source file \"%s\".\n", srcPath);
@@ -75,7 +70,6 @@ main (int argc, char** argv){
     }
 
     // Create dest file.
-    printf("Dest: %s\n", destPath);
     fdDest = creat(destPath, 0644);
     if (fdDest < 0){
         fprintf(stderr, "Could not open dest file \"%s\".\n", destPath);
@@ -127,6 +121,9 @@ main (int argc, char** argv){
  * If an error is encountered or file cannot be compressed,
  * returns 0. */
 unsigned int compress (int fdSource, int fdDest){
+   // Report operation.
+   printf("Compressing...\n");
+
 	// Counters:
     int currBytesLoaded = 0;
     unsigned int bytesWritten = 0;
@@ -196,6 +193,9 @@ unsigned int compress (int fdSource, int fdDest){
  * If an error is encountered or file cannot be decompressed,
  * returns 0. */
 unsigned int decompress (int fdSource, int fdDest){
+   // Report operation.
+   printf("Decompressing...\n");
+
 	// Counters:
     int currBytesLoaded = 0;
     unsigned int bytesWritten = 0;
