@@ -7,10 +7,11 @@
 #include <string.h>
 #include <fcntl.h>
 
-static char* FILE_EXT = ".z827";
-static int EXT_LEN = 5;
-static char NON_ASCII_MASK = 0b10000000;
-static char ASCII_MASK = 0b01111111;
+static const char* FILE_EXT = ".z827";
+static const int EXT_LEN = 5;
+static const char NON_ASCII_MASK = 0b10000000;
+static const char ASCII_MASK = 0b01111111;
+static const int WRITE_BUF_SIZE = 128;
 
 unsigned int compress (int, int);
 unsigned int decompress (int, int);
@@ -135,6 +136,8 @@ unsigned int compress (int fdSource, int fdDest){
    // Buffers:
    unsigned char inBuf = 0;
    unsigned char outBuf = 0;
+   char *writeBuf = malloc(WRITE_BUF_SIZE);
+   int bytesToWrite = 0;
 
    // Write space for original size.
 	if (write(fdDest, &origBytes, 4) != 4) return 0;
@@ -167,17 +170,38 @@ unsigned int compress (int fdSource, int fdDest){
 		 * bits of outBuf with the same number of bits from inBuf. */
        outBuf = outBuf | (inBuf << (7-bitsOffset));
 
-      // Write out-buffer and count bytes written.
-       bytesWritten += write(fdDest,&outBuf,sizeof(char));
+      // Add byte to writeBuffer
+      writeBuf[bytesToWrite] = outBuf;
+      bytesToWrite++;
+
+      // If buffer is full...
+      if (bytesToWrite == WRITE_BUF_SIZE){
+         // Write out-buffer and count bytes written.
+         bytesWritten += write(fdDest,writeBuf,bytesToWrite);
+
+         // Reset buffer
+         bytesToWrite = 0;
+      }
 
        // Keep track of shift counts.
        bitsOffset++;
+
+       // If shifted a full seven characters...
        if (bitsOffset > 6){
+         // Reset offset.
          bitsOffset = 0;
+
+         // Load next byte, since no useful bits in buffer
 		   currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
 	    	origBytes += currBytesLoaded;
       }
    }
+
+   // Flush buffer
+   if (bytesToWrite){
+      bytesWritten += write(fdDest,writeBuf,bytesToWrite);
+   }
+   free(writeBuf);
 
 	// Seek to start of file and write original filesize
 	if (lseek(fdDest, 0, SEEK_SET) != 0) return 0;
@@ -218,6 +242,8 @@ unsigned int decompress (int fdSource, int fdDest){
    unsigned char *inBufNext = (char*) &inBuf;
    unsigned char *inBufFill = (char*) &inBuf + 1;
    unsigned char outBuf = 0;
+   char *writeBuf = malloc(WRITE_BUF_SIZE);
+   int bytesToWrite = 0;
 
    // Load original size.
    read(fdSource, &origBytes, 4);
@@ -228,10 +254,18 @@ unsigned int decompress (int fdSource, int fdDest){
    bitsInBuf = currBytesLoaded * 8;
 
    // Continue until buffer is empty or all chars written.
-   while (bitsInBuf > 0 && bytesWritten < origBytes){
-      // Decompress char and write it.
+   while (bitsInBuf > 0 && bytesWritten + bytesToWrite < origBytes){
+      // Decompress char and add it to write buffer.
       outBuf = *inBufNext & ASCII_MASK;
-      bytesWritten += write(fdDest, &outBuf, sizeof(char));
+      writeBuf[bytesToWrite] = outBuf;
+      bytesToWrite++;
+
+      // If write buffer is full...
+      if (bytesToWrite == WRITE_BUF_SIZE){
+         // Write the buffer and reset it.
+         bytesWritten += write(fdDest, writeBuf, bytesToWrite);
+         bytesToWrite = 0;
+      }
 
       // Shift buffer to right-align next byte.
       inBuf = inBuf >> 7;
@@ -253,8 +287,18 @@ unsigned int decompress (int fdSource, int fdDest){
       }
    }
 
+   // Flush write buffer
+   if (bytesToWrite){
+      bytesWritten += write(fdDest, writeBuf, bytesToWrite);
+   }
+
    // Ensure full decompression.
-   if (bytesWritten != origBytes) return 0;
+   if (bytesWritten != origBytes){
+      fprintf(stderr, "File decryption failed.\n");
+      fprintf(stderr, "%u bytes written instead of %u.\n",
+         bytesWritten, origBytes);
+      return 0;
+   }
 
    // Return total number of bytes written to file.
    return bytesWritten;
