@@ -11,7 +11,7 @@ static const char* FILE_EXT = ".z827";
 static const int EXT_LEN = 5;
 static const char NON_ASCII_MASK = 0b10000000;
 static const char ASCII_MASK = 0b01111111;
-static const int IO_BUF_SIZE = 128;
+static const int IO_BUF_SIZE = 512;
 
 unsigned int compress (int, int);
 unsigned int decompress (int, int);
