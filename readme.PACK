@@ -30,7 +30,7 @@ This directory should contain the following:
 * support/short.txt
 * support/short.txt.z827.referenceSoln
 * support/words.txt
-* support/ztest
+* support/testScript
 
 The following files can be genrated:
 * writeUp - Made by "make writeup"
@@ -42,7 +42,7 @@ When running the test script, the working directory must be the root project
 directory. (The directory this file is located in.)
 It can be executed using either of the following commands:
 
-   "support/ztest"
+   "support/testScript"
       - or -
    "make test"
 
@@ -70,9 +70,10 @@ to stdout while it is running. Specifically, it prints whether it is running
 in compression or decompression mode and alerts when the process is complete.
 
 EXTRA FEATURES:
-The program itself does not provide any additional functionality not included
-in the specification. However, some additional supporting features are
-provided, including:
+Input and output streams are buffered to read() and write() in blocks of 512
+bytes. Testing shows this improves performance by roughly 6.5 times.
+
+Also, some additional supporting features are provided, including:
 * makefile
 * testing suite
 * written part generator

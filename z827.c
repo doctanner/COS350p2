@@ -7,10 +7,11 @@
 #include <string.h>
 #include <fcntl.h>
 
-static char* FILE_EXT = ".z827";
-static int EXT_LEN = 5;
-static char NON_ASCII_MASK = 0b10000000;
-static char ASCII_MASK = 0b01111111;
+static const char* FILE_EXT = ".z827";
+static const int EXT_LEN = 5;
+static const char NON_ASCII_MASK = 0b10000000;
+static const char ASCII_MASK = 0b01111111;
+static const int IO_BUF_SIZE = 512;
 
 unsigned int compress (int, int);
 unsigned int decompress (int, int);
@@ -126,65 +127,110 @@ unsigned int compress (int fdSource, int fdDest){
    printf("Compressing...\n");
    fflush(stdout);
 
-	// Counters:
-    int currBytesLoaded = 0;
-    unsigned int bytesWritten = 0;
-    unsigned int origBytes = 0;
-    int bitsOffset = 0;
+   // Counters:
+   int currBytesLoaded = 0;
+   unsigned int bytesWritten = 0;
+   unsigned int origBytes = 0;
+   int bitsOffset = 0;
 
-    // Buffers:
-    unsigned char inBuf = 0;
-    unsigned char outBuf = 0;
+   // Buffers:
+   unsigned char inBuf = 0;
+   unsigned char outBuf = 0;
+   char *writeBuf = malloc(IO_BUF_SIZE);
+   int bytesToWrite = 0;
+   char *readBuf = malloc(IO_BUF_SIZE);
+   int readBufBytes = 0;
+   int readBufIndex = 0;
 
-    // Write space for original size.
-	if (write(fdDest, &origBytes, 4) != 4) return 0;
+   // Write space for original size.
+   if (write(fdDest, &origBytes, 4) != 4) return 0;
 
-	// Load first char and start compressing.
-    currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
-    origBytes += currBytesLoaded;
-    while (currBytesLoaded > 0){
-		// Check for non-ascii char from init or if.
-	  	if (inBuf & NON_ASCII_MASK > 0) return -1;
+   // Fill read buffer.
+   readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
+   origBytes += readBufBytes;
 
-    	/* Copy un-written high-order bits from the in-buffer to 
-    	 * the low-order bits of the out-buffer. */
-    	/* Note: bitsOffset refers to the number of bits in the current
-    	 * character that have already been written. So this many bits
-    	 * should be "pushed off" the end of the buffer. */
-        outBuf = inBuf  >> bitsOffset;
+   // If nothing loaded, fail.
+   if (readBufBytes == 0) return 0;
 
-        // Read in the next character.
-	    currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
-    	origBytes += currBytesLoaded;
-        if (currBytesLoaded < 1) inBuf = 0;
-	  	else if (inBuf & NON_ASCII_MASK > 0) return -1;
+   // Load first char and start compressing.
+   inBuf = readBuf[readBufIndex];
+   readBufIndex++;
+   while (readBufBytes){
+      // Fill readBuf if necessary.
+      if (readBufIndex >= readBufBytes){
+         readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
+         origBytes += readBufBytes;
+         readBufIndex = 0;
+         if (readBufBytes == 0){
+            readBuf[readBufIndex] = 0;
+         }
+      }
 
-		/* Copy low-order bits from in-buffer to fill unused
-		 * high-order bits in out-buffer. */
-		/* Note: since bitsOffset is the number of bits "pushed off"
-		 * the previous character, by left-shifting inBuf by
-		 * 7 - bitsOffset buts, we can fill the unused high-order
-		 * bits of outBuf with the same number of bits from inBuf. */
-        outBuf = outBuf | (inBuf << (7-bitsOffset));
+      // Check for non-ascii char from init or if.
+      if (inBuf & NON_ASCII_MASK > 0) return 0;
 
-        // Write out-buffer and count bytes written.
-        bytesWritten += write(fdDest,&outBuf,sizeof(char));
+      /* Copy un-written high-order bits from the in-buffer to 
+      * the low-order bits of the out-buffer. */
+      /* Note: bitsOffset refers to the number of bits in the current
+       * character that have already been written. So this many bits
+       * should be "pushed off" the end of the buffer. */
+      outBuf = inBuf  >> bitsOffset;
 
-        // Keep track of shift counts.
-        bitsOffset++;
-        if (bitsOffset > 6){
-            bitsOffset = 0;
-		    currBytesLoaded = read(fdSource, &inBuf, sizeof(char));
-	    	origBytes += currBytesLoaded;
-        }
-	}
+      // Read in the next character.
+      inBuf = readBuf[readBufIndex];
+      readBufIndex++;
 
-	// Seek to start of file and write original filesize
-	if (lseek(fdDest, 0, SEEK_SET) != 0) return 0;
-	if (write(fdDest, &origBytes, 4) != 4) return 0;
+      // If character isn't ASCII, fail.
+      if (inBuf & NON_ASCII_MASK > 0) return 0;
 
-	// Return total number of bytes written to file.
-	return bytesWritten;
+	   /* Copy low-order bits from in-buffer to fill unused
+	    * high-order bits in out-buffer. */
+      /* Note: since bitsOffset is the number of bits "pushed off"
+       * the previous character, by left-shifting inBuf by
+       * 7 - bitsOffset buts, we can fill the unused high-order
+       * bits of outBuf with the same number of bits from inBuf. */
+       outBuf = outBuf | (inBuf << (7-bitsOffset));
+
+      // Add byte to writeBuffer
+      writeBuf[bytesToWrite] = outBuf;
+      bytesToWrite++;
+
+      // If buffer is full...
+      if (bytesToWrite == IO_BUF_SIZE){
+         // Write out-buffer and count bytes written.
+         bytesWritten += write(fdDest,writeBuf,bytesToWrite);
+
+         // Reset buffer
+         bytesToWrite = 0;
+      }
+
+       // Keep track of shift counts.
+       bitsOffset++;
+
+       // If shifted a full seven characters...
+       if (bitsOffset > 6){
+         // Reset offset.
+         bitsOffset = 0;
+
+         // Load next byte, since no useful bits in buffer
+         inBuf = readBuf[readBufIndex];
+         readBufIndex++;
+      }
+   }
+
+   // Flush write buffer
+   if (bytesToWrite){
+      bytesWritten += write(fdDest,writeBuf,bytesToWrite);
+   }
+   free(writeBuf);
+   free(readBuf);
+
+   // Seek to start of file and write original filesize
+   if (lseek(fdDest, 0, SEEK_SET) != 0) return 0;
+   if (write(fdDest, &origBytes, 4) != 4) return 0;
+
+   // Return total number of bytes written to file.
+   return bytesWritten;
 }
 
 /* unsigned int decompress(int, int)
@@ -199,63 +245,83 @@ unsigned int decompress (int fdSource, int fdDest){
    printf("Decompressing...\n");
    fflush(stdout);
 
-	// Counters:
-    int currBytesLoaded = 0;
-    unsigned int bytesWritten = 0;
-    unsigned int origBytes = 0;
-    int bitsInBuf = 0;
+   // Counters:
+   int currBytesLoaded = 0;
+   unsigned int bytesWritten = 0;
+   unsigned int origBytes = 0;
+   int bitsInBuf = 0;
 
-    // Buffers:
-    /* Note: inBuf is an integer buffer that will hold four
-     * bytes of data. inLbits points to the first byte; as
-     * such, it should always contain the next byte to be 
-     * decompressed.
-     * inHBits points to the start of the remaining bytes.
-     * It us used to refill the buffer from the file.
-     * outBuf is used to decompress a char from seven bits
-     * to eightand write it to disk.*/
-    unsigned int inBuf = 0;
-    unsigned char *inLbits = (char*) &inBuf;
-    unsigned char *inHbits = (char*) &inBuf + 1;
-    unsigned char outBuf = 0;
+   // Buffers:
+   /* Note: inBuf is an integer buffer that will hold four
+    * bytes of data. inBufNext points to the first byte; as
+    * such, it should always contain the next byte to be 
+    * decompressed.
+    * inBufFill points to the start of the remaining bytes.
+    * It us used to refill the buffer from the file.
+    * outBuf is used to decompress a char from seven bits
+    * to eightand write it to disk.*/
+   unsigned int inBuf = 0;
+   unsigned char *inBufNext = (char*) &inBuf;
+   unsigned char *inBufFill = (char*) &inBuf + 1;
+   unsigned char outBuf = 0;
+   char *writeBuf = malloc(IO_BUF_SIZE);
+   int bytesToWrite = 0;
 
-    // Load original size.
-    read(fdSource, &origBytes, 4);
-    if (origBytes < 1) return 0;
+   // Load original size.
+   read(fdSource, &origBytes, 4);
+   if (origBytes < 1) return 0;
 
-    // Load initial buffer
-    currBytesLoaded = read(fdSource, &inBuf, sizeof(int));
-    bitsInBuf = currBytesLoaded * 8;
+   // Load initial buffer
+   currBytesLoaded = read(fdSource, &inBuf, sizeof(int));
+   bitsInBuf = currBytesLoaded * 8;
 
-    // Continue until buffer is empty or all chars written.
-    while (bitsInBuf > 0 && bytesWritten < origBytes){
-    	// Decompress char and write it.
-    	outBuf = *inLbits & ASCII_MASK;
-		bytesWritten += write(fdDest, &outBuf, sizeof(char));
+   // Continue until buffer is empty or all chars written.
+   while (bitsInBuf > 0 && bytesWritten + bytesToWrite < origBytes){
+      // Decompress char and add it to write buffer.
+      outBuf = *inBufNext & ASCII_MASK;
+      writeBuf[bytesToWrite] = outBuf;
+      bytesToWrite++;
 
-		// Shift buffer to right-align next byte.
-		inBuf = inBuf >> 7;
-		bitsInBuf -= 7;
+      // If write buffer is full...
+      if (bytesToWrite == IO_BUF_SIZE){
+         // Write the buffer and reset it.
+         bytesWritten += write(fdDest, writeBuf, bytesToWrite);
+         bytesToWrite = 0;
+      }
 
-		// If buffer low, refill it.
-   		if (bitsInBuf <= 8){
-   			/* To refull the buffer, we shift it to left-align
-   			 * the remaining bits within the low-end byte. This
-   			 * prevents junk data from entering the bit-stream.
-   			 * Then, load the three high-end bytes from the file.
-   			 * Finally, shift the entire buffer right in order
-   			 * to return the buffer to its normal right-aligned
-   			 * state. */
-   			int diff = 8 - bitsInBuf;
-   			inBuf = inBuf << diff;
-   			bitsInBuf += 8 * read(fdSource, inHbits, 3);
-   			inBuf = inBuf >> diff;
-   		}
-	}
+      // Shift buffer to right-align next byte.
+      inBuf = inBuf >> 7;
+      bitsInBuf -= 7;
 
-	// Ensure full decompression.
-	if (bytesWritten != origBytes) return 0;
+      // If buffer low, refill it.
+   	if (bitsInBuf <= 8){
+         /* To refull the buffer, we shift it to left-align
+          * the remaining bits within the low-end byte. This
+          * prevents junk data from entering the bit-stream.
+          * Then, load the three high-end bytes from the file.
+          * Finally, shift the entire buffer right in order
+          * to return the buffer to its normal right-aligned
+          * state. */
+         int diff = 8 - bitsInBuf;
+         inBuf = inBuf << diff;
+         bitsInBuf += 8 * read(fdSource, inBufFill, 3);
+         inBuf = inBuf >> diff;
+      }
+   }
 
-	// Return total number of bytes written to file.
-	return bytesWritten;
+   // Flush write buffer
+   if (bytesToWrite){
+      bytesWritten += write(fdDest, writeBuf, bytesToWrite);
+   }
+
+   // Ensure full decompression.
+   if (bytesWritten != origBytes){
+      fprintf(stderr, "File decryption failed.\n");
+      fprintf(stderr, "%u bytes written instead of %u.\n",
+         bytesWritten, origBytes);
+      return 0;
+   }
+
+   // Return total number of bytes written to file.
+   return bytesWritten;
 }
