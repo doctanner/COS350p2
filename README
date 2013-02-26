@@ -70,9 +70,10 @@ to stdout while it is running. Specifically, it prints whether it is running
 in compression or decompression mode and alerts when the process is complete.
 
 EXTRA FEATURES:
-The program itself does not provide any additional functionality not included
-in the specification. However, some additional supporting features are
-provided, including:
+Input and output streams are buffered to read() and write() larger blocks in
+each call. This should enhance performance.
+
+Also, some additional supporting features are provided, including:
 * makefile
 * testing suite
 * written part generator
