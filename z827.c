@@ -246,7 +246,6 @@ unsigned int decompress (int fdSource, int fdDest){
    fflush(stdout);
 
    // Counters:
-   int currBytesLoaded = 0;
    unsigned int bytesWritten = 0;
    unsigned int origBytes = 0;
    int bitsInBuf = 0;
@@ -266,17 +265,23 @@ unsigned int decompress (int fdSource, int fdDest){
    unsigned char outBuf = 0;
    char *writeBuf = malloc(IO_BUF_SIZE);
    int bytesToWrite = 0;
+   char *readBuf = malloc(IO_BUF_SIZE);
+   int readBufBytes = 0;
+   int readBufIndex = 0;
 
    // Load original size.
    read(fdSource, &origBytes, 4);
    if (origBytes < 1) return 0;
 
    // Load initial buffer
-   currBytesLoaded = read(fdSource, &inBuf, sizeof(int));
-   bitsInBuf = currBytesLoaded * 8;
+   readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
+   memcpy(&inBuf, readBuf, 4);
+   readBufIndex += 4;
+   bitsInBuf = readBufBytes > 2 ? 32 : readBufBytes * 8;
 
    // Continue until buffer is empty or all chars written.
    while (bitsInBuf > 0 && bytesWritten + bytesToWrite < origBytes){
+
       // Decompress char and add it to write buffer.
       outBuf = *inBufNext & ASCII_MASK;
       writeBuf[bytesToWrite] = outBuf;
@@ -302,10 +307,25 @@ unsigned int decompress (int fdSource, int fdDest){
           * Finally, shift the entire buffer right in order
           * to return the buffer to its normal right-aligned
           * state. */
+
+         // Shift to left-align bits in byte.
          int diff = 8 - bitsInBuf;
-         inBuf = inBuf << diff;
-         bitsInBuf += 8 * read(fdSource, inBufFill, 3);
-         inBuf = inBuf >> diff;
+         inBuf <<= diff;
+
+         // Refill readBuf if necessary.
+         if (readBufIndex >= readBufBytes){
+            readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
+            readBufIndex = 0;
+         }
+
+         // Mem copy from readBuf to inBuf
+         int bytesToMove = readBufBytes - readBufIndex;
+         bytesToMove = bytesToMove > 2 ? 3 : bytesToMove;
+         memcpy(inBufFill, readBuf + readBufIndex, bytesToMove);
+         bitsInBuf += bytesToMove * 8;
+
+         // Shift back to right-align buffer
+         inBuf >>= diff;
       }
    }
 
