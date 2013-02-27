@@ -146,7 +146,7 @@ unsigned int compress (int fdSource, int fdDest){
    if (write(fdDest, &origBytes, 4) != 4) return 0;
 
    // Fill read buffer.
-   readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
+   readBufBytes = read(fdSource, readBuf, 9);
    origBytes += readBufBytes;
 
    // If nothing loaded, fail.
@@ -158,10 +158,11 @@ unsigned int compress (int fdSource, int fdDest){
    while (readBufBytes){
       // Fill readBuf if necessary.
       if (readBufIndex >= readBufBytes){
-         readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
+         readBufBytes = read(fdSource, readBuf, 9);
          origBytes += readBufBytes;
          readBufIndex = 0;
          if (readBufBytes == 0){
+            readBufIndex = 0;
             readBuf[readBufIndex] = 0;
          }
       }
@@ -204,14 +205,25 @@ unsigned int compress (int fdSource, int fdDest){
          bytesToWrite = 0;
       }
 
-       // Keep track of shift counts.
-       bitsOffset++;
+      // Keep track of shift counts.
+      bitsOffset++;
 
-       // If shifted a full seven characters...
-       if (bitsOffset > 6){
+      // If shifted a full seven characters...
+      if (bitsOffset > 6){
          // Reset offset.
          bitsOffset = 0;
-
+         
+         //TEMP:
+         if (readBufBytes == readBufIndex){
+            readBufBytes = read(fdSource, readBuf, 9);
+            origBytes += readBufBytes;
+            readBufIndex = 0;
+            if (readBufBytes == 0){
+               readBufIndex = 0;
+               readBuf[readBufIndex] = 0;
+            }
+         }
+         
          // Load next byte, since no useful bits in buffer
          inBuf = readBuf[readBufIndex];
          readBufIndex++;
