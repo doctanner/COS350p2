@@ -1,33 +1,88 @@
-SETUP: - IMPORTANT -
+AUTHORS:
+James Tanner: z827.c, testing suite, makefile, and README.
+James Tanner and Rachel Champoux: man page
 
-Please use the command "SETUP" or "make" to setup the support material.
+Note: (Tanner) Rachel and I intended to work on this project together.
+However, scheduling conflicts meant we couldn't work on the code together. So,
+we wrote the program itself separately but with collaboration. As such, many
+parts of the code are quite similar.
 
+The man page was written collaboratively.
+The testing suite, writeup generator, and makefile are my work.
 
-NOTES:
+PURPOSE:
+COS 350: Systems Programming
+Program 2
 
-This variation of my z827 project is flattened to one directory for use with
-the "submit" program. Code and executable file are available without unpacking,
-but support features will not be functional.
+MAN PAGE:
+The command "man ./manpage" will display the attached manpage in standard
+format. This command is also included in the makefile and can be executed with
+the command "make man".
 
-Please run the SETUP script directly or with the command "make" to properly
-package the support materials. Once the SETUP script runs, the directory should
-be in the state described in readme.PACK and hard-copy submission.
+CONTENTS:
+This directory should contain the following:
+* z827.c
+* makefile
+* manpage
+* README
+* support/writeScript
+* support/shake.txt
+* support/short.txt
+* support/short.txt.z827.referenceSoln
+* support/words.txt
+* support/testScript
 
-If the script fails for any reason, the support material can be unpacked
-manually using the following commands:
+The following files can be genrated:
+* writeUp - Made by "make writeup"
+* testResult - Made by "make test" or "make testResult"
 
-mkdir support
-mv *.txt* support/
-mv *Script support/
-mv makefile.PACK makefile
-chmod +x support/*Script
-mv readme.PACK README
+TESTING:
+The support directory contains a script and reference files for use in testing.
+When running the test script, the working directory must be the root project
+directory. (The directory this file is located in.)
+It can be executed using either of the following commands:
 
-This makes the support directory, copies the test source files, and copies the
-scripts. It then replaces the SETUP makefile with the z827 makefile. Next, it
-makes the scripts executable. Finally, it replaces this README with the z827
-README.
+   "support/testScript"
+      - or -
+   "make test"
 
-Additionally, the script erases itself when complete to prevent accidentally
-running it again. This leaves the directory in exactly the state described in
-the z827 README.
+Note: The latter is recommended as it also recompiles the executable if any
+changes have been made.
+
+MAKEFILE:
+The makefile provides the following commands:
+* make: Compiles the application and dependancies.
+* make testResult: Compiles the application and runs the included test script.
+* make test: Displays the test results from make testResult, generating new
+  results if necessary.
+* make man: Outputs the attached man page.
+* make writeUp: Generates and displays the writeUp document.
+* make print: Prints the last writeUp file using a2ps to the default printer.
+  If no writeUp exists, this command generates a new one.
+* make clean: Removes object files created during compilation, but leaves
+  executable intact.
+* make erase: Resets project directory by erasing object files, executable,
+  testResult and writeUp.
+
+DEVIATIONS:
+z827 deviates from the specification only in that it prints some output
+to stdout while it is running. Specifically, it prints whether it is running
+in compression or decompression mode and alerts when the process is complete.
+
+EXTRA FEATURES:
+Input and output streams are buffered to read() and write() in blocks of 512
+bytes. Testing shows this improves performance by roughly 6.5 times.
+
+Also, some additional supporting features are provided, including:
+* makefile
+* testing suite
+* written part generator
+Note: all of these features are accessable via "make [option]" commands.
+(See "MAKEFILE" above.)
+
+BUGS:
+The formatted man page is not compatable with a2ps. Specifically, it appears
+that the generated line length is two characters too long for a2ps' page width.
+
+See man page for any known bugs/issues with the z827 program.
+The man page may be accessed via "man ./manpage" or "make manpage" commands.
