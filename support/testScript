@@ -17,73 +17,109 @@ echo Done.
 echo
 echo "_________________________"
 echo "TEST 1:"
-z827 short.txt 2> T1p1ErrResult
+z827 short.txt 2> p1ErrResult
 od -t x1 support/short.txt.z827.referenceSoln > goodResult
-od -t x1 short.txt.z827 > myResult 2> T1p1ErrResult
+od -t x1 short.txt.z827 > myResult 2>&1
 echo
 echo "Result:"
 diff myResult goodResult > totResult
-if [ -s totRsult -o -s T1p1ErrResult ]
+if [ -s totResult -o -s p1ErrResult ]
    then
       echo "FAILED!"
-      echo "Check T1p1ErrResult for errors."
+      echo "Check test1Result for info."      
+      echo > test1Result
+      echo "Compression error output:" >> test1Result
+      cat p1ErrResult >> test1Result
+      echo >> test1Result
+      echo "Diff: /\ Output - \/ Good" >> test1Result
+      cat totResult >> test1Result
+      echo >> test1Result
    else
       echo "Passed"
-      rm -f T1p1ErrResult
 fi
 
 echo
-z827 short.txt.z827 2> T1p2ErrResult
+z827 short.txt.z827 2> p2ErrResult
 od -t x1 support/short.txt > goodResult
 od -t x1 short.txt > myResult 2>&1
 diff myResult goodResult > totResult 2>&1
 echo
 echo "Result:"
-if [ -s totRsult -o -s T1p2ErrResult ]
+if [ -s totResult -o -s p2ErrResult ]
    then
       echo "FAILED!"
-      echo "Check T1p2ErrResult for errors."
+      echo "Check test1Result for info."
+      
+      echo >> test1Result
+      echo "Decompression error output:" >> test1Result
+      cat p1ErrResult >> test1Result
+      echo >> test1Result
+      echo "Diff: /\ Output - \/ Good" >> test1Result
+      cat totResult >> test1Result
+      echo >> test1Result
    else
       echo "Passed"
-      rm -f T1p2ErrResult
+      rm -f test1Result
 fi
 
 echo
 echo "_________________________"
 echo "TEST 2:"
-z827 shake.txt 2> T2p1ErrResult
+z827 shake.txt 2> p1ErrResult
 
 echo
-z827 shake.txt.z827 2> T2p2ErrResult
-diff shake.txt support/shake.txt > totResult 2>&1
+z827 shake.txt.z827 2> p2ErrResult
+cmp shake.txt support/shake.txt > totResult 2>&1
 echo
 echo "Result:"
-if [ -s totRsult -o -s T2p1ErrResult -o -s T2p2ErrResult ]
+if [ -s totResult -o -s p1ErrResult -o -s p2ErrResult ]
    then
       echo "FAILED!"
-      echo "Check T2p1ErrResult and T2p2ErrResult for errors."
+      echo "Check test2Result for info."
+      
+      echo > test2Result
+      echo "Compression error output:" >> test2Result
+      cat p1ErrResult >> test2Result
+      echo >> test2Result
+      echo "Decompression error output:" >> test2Result
+      cat p2ErrResult >> test2Result
+      echo >> test2Result
+      echo "Generated vs. Source Compare:" >> test2Result
+      cat totResult >> test2Result
+      echo >> test2Result
    else
       echo "Passed"
-      rm -f T2*ErrResult
+      rm -f test2Result
 fi
 
 echo
 echo "_________________________"
 echo "TEST 3:"
-z827 words.txt 2> T3p1ErrResult
+z827 words.txt 2> p1ErrResult
 
 echo
-z827 words.txt.z827 2> T3p2ErrResult
-diff words.txt support/words.txt > totResult 2>&1
+z827 words.txt.z827 2> p2ErrResult
+cmp words.txt support/words.txt > totResult 2>&1
 echo
 echo "Result:"
-if [ -s totRsult -o -s T3p1ErrResult -o -s T3p2ErrResult ]
+if [ -s totResult -o -s p1ErrResult -o -s p2ErrResult ]
    then
       echo "FAILED!"
-      echo "Check T3p1ErrResult T3p2ErrResult for errors."
+      echo "Check test3Result for info."
+
+      echo > test3Result
+      echo "Compression error output:" >> test3Result
+      cat p1ErrResult >> test3Result
+      echo >> test3Result
+      echo "Decompression error output:" >> test3Result
+      cat p2ErrResult >> test3Result
+      echo >> test3Result
+      echo "Generated vs. Source Compare:" >> test3Result
+      cat totResult >> test3Result
+      echo >> test3Result
    else
       echo "Passed"
-      rm -f T3*ErrResult
+      rm -f test3Result
 fi
 
 echo
@@ -92,6 +128,8 @@ echo "Clean UP:"
 rm -f myResult
 rm -f goodResult
 rm -f totResult
+rm -f p1ErrResult
+rm -f p2ErrResult
 
 rm -f short.txt
 rm -f shake.txt
