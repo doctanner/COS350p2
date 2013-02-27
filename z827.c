@@ -143,14 +143,20 @@ unsigned int compress (int fdSource, int fdDest){
    int readBufIndex = 0;
 
    // Write space for original size.
-   if (write(fdDest, &origBytes, 4) != 4) return 0;
+   if (write(fdDest, &origBytes, 4) != 4){
+      fprintf(stderr, "Failed first write.\n");
+      return 0;
+   }
 
    // Fill read buffer.
    readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
    origBytes += readBufBytes;
 
    // If nothing loaded, fail.
-   if (readBufBytes == 0) return 0;
+   if (readBufBytes == 0){
+      fprintf(stderr, "Source file empty.\n");
+      return 0;
+   }
 
    // Load first char and start compressing.
    inBuf = readBuf[readBufIndex];
@@ -168,7 +174,10 @@ unsigned int compress (int fdSource, int fdDest){
       }
 
       // Check for non-ascii char from init or if.
-      if (inBuf & NON_ASCII_MASK > 0) return 0;
+      if (inBuf & NON_ASCII_MASK > 0){
+         fprintf(stderr, "Source file contains non-ASCII char.\n");
+         return 0;
+      }
 
       /* Copy un-written high-order bits from the in-buffer to 
       * the low-order bits of the out-buffer. */
@@ -182,7 +191,10 @@ unsigned int compress (int fdSource, int fdDest){
       readBufIndex++;
 
       // If character isn't ASCII, fail.
-      if (inBuf & NON_ASCII_MASK > 0) return 0;
+      if (inBuf & NON_ASCII_MASK > 0){
+         fprintf(stderr, "Source file contains non-ASCII char.\n");
+         return 0;
+      }
 
 	   /* Copy low-order bits from in-buffer to fill unused
 	    * high-order bits in out-buffer. */
@@ -238,8 +250,14 @@ unsigned int compress (int fdSource, int fdDest){
    free(readBuf);
 
    // Seek to start of file and write original filesize
-   if (lseek(fdDest, 0, SEEK_SET) != 0) return 0;
-   if (write(fdDest, &origBytes, 4) != 4) return 0;
+   if (lseek(fdDest, 0, SEEK_SET) != 0){
+      fprintf(stderr,"Failed to seek to start of file.\n");
+      return 0;
+   }
+   if (write(fdDest, &origBytes, 4) != 4){
+      fprintf(stderr,"Failed to write original file size.\n");
+      return 0;
+   }
 
    // Return total number of bytes written to file.
    return bytesWritten;
@@ -283,7 +301,10 @@ unsigned int decompress (int fdSource, int fdDest){
 
    // Load original size.
    read(fdSource, &origBytes, 4);
-   if (origBytes < 1) return 0;
+   if (origBytes < 1){
+      fprintf(stderr,"Source file empty or original size zero.\n");
+      return 0;
+   }
 
    // Load initial buffer
    readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);

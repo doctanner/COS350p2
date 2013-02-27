@@ -18,18 +18,11 @@ Decompressed files are saved to the same filepath with ".z827" removed.
 If the compression or decompression succeeds, the original file is
 deleted.
 
-z827 compresses files by deleting the high order 8th bit, which is always
-0 for ACII characters. This is done by taking a byte into a buffer and 
-shifting the next byte to the left, overriding the high order bit.
-
-z827 decompresses files by undoing the compression operation. It takes
-four characters at a time into a buffer. It masks the high order bit
-and outputs the first character. Then, using shifting operations, the first
-character is pushed off the end of the buffer and the second character is 
-pushed into place. When three of the four characters have been written,
-the buffer is refilled. This continues while there are bits in the buffer
-to be written and the amount written to output is less than the size
-of the original file. 
+z827 compresses files by sending seven low-order bits to the output
+bit-stream. Thie effectively deletes the high-order bit, which is always
+0 for ASCII characters. Additionally, the size of the original file is
+written to the start of the compressed file as a little-endian ordered
+integer. This ensures decompression returns the exact original file.
 
 .SH EXAMPLES
 z827 myText.txt - Compress the file "myText.txt".
@@ -40,19 +33,35 @@ z827 mytext.txt.z827 - Decompress the resulting file.
 No options available.
 
 .SH NOTES
-z827 only compressed files consisting entirely of ASCII characters.
+z827 only compresses files consisting entirely of ASCII characters.
 
 .SH BUGS
-No known bugs. It is, however, possible to compress non-ASCII files, provided
-the 8th bit of all bytes in the files is 0. While the resulting file can be
-decompressed as normal, this is considered incorrect behavior and can not be
-gauranteed.
+Both compression and decompression may not function properly on platforms with
+big-endian integer ordering. The endianness of the host machine is NOT tested
+and compression will fail silently and still remove the source file.
+Compression will fail with an error and not remove the source file.
+
+To fix this bug, integer buffers would have to be loaded in reverse. This
+requires extensive code modifications to both compression and decompression.
+
+Additionally, it possible to compress and decompress non-ASCII files, provided
+the high-order bit of all bytes in the original file are zero. This is considered
+incorrect behavior and can not be gauranteed.
 
 .SH MESSAGES AND EXIT CALLS
-z827 will throw an error if no file is given or if there are too many 
-arguments given. 
-An error is thrown if the file does not exist or can't 
-be opened. 
+Exit codes are as follows:
+
+ 0: Normal function. File compressed or decompressed.
+
+-1: More or less than 1 argument were provided. Prints help message.
+
+-2: Could not open source file. Prints requested file path.
+
+-3: Could not open destination file. Prints requested file path.
+
+-4: Compression or decompression failed. May print reason.
+
+
 
 .SH AUTHORS
 Manpage written by James Tanner and Rachel Champoux.
