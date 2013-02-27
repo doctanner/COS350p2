@@ -47,3 +47,18 @@ DIFFERENCE:
 real 2.28 vs 14.67 = 6.43x faster
 user 0.17 vs 0.93  = 5.4x faster 
 sys  0.67 vs 12.21 = 18x faster
+
+
+WITH DECOMPRESSION READ BUFFER:
+real 1.62
+user 0.14
+sys 0.04
+
+real 1.65
+user 0.14
+sys 0.05
+
+real 1.62
+user 0.14
+sys 0.05
+
