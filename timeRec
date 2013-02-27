@@ -1,0 +1,49 @@
+Times generated using:
+/usr/bin/time -p -a -o timeRec support/testScript
+
+IO_BUF_SIZE = 1:
+trial 1:
+real 14.79
+user 0.95
+sys 12.29
+
+trial 2:
+real 14.56
+user 0.86
+sys 12.18
+
+trial 3:
+real 14.67
+user 0.98
+sys 12.17
+
+Averages: 
+real 14.67
+user 0.93
+sys 12.21 
+
+
+IO_BUF_SIZE = 512:
+real 2.28
+user 0.18
+sys 0.67
+
+real 2.27
+user 0.19
+sys 0.64
+
+real 2.28
+user 0.13
+sys 0.71
+
+Averages: 
+real 2.28
+user 0.17
+sys  0.67
+
+
+DIFFERENCE:
+ 
+real 2.28 vs 14.67 = 6.43x faster
+user 0.17 vs 0.93  = 5.4x faster 
+sys  0.67 vs 12.21 = 18x faster

@@ -10,7 +10,7 @@ z827: z827.o
 
 z827.o: z827.c
 	gcc -c $(FLAGS) z827.c
-	rm -f testResult
+	rm -f *Result
 	rm -f writeUp
 
 testResult: z827
