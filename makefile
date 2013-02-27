@@ -7,11 +7,11 @@ FLAGS=-g
 
 z827: z827.o
 	$(COMP) $(FLAGS) z827.o -o z827
+	rm -f *Result
+	rm -f writeUp
 
 z827.o: z827.c
 	gcc -c $(FLAGS) z827.c
-	rm -f *Result
-	rm -f writeUp
 
 testResult: z827
 	clear
@@ -22,9 +22,8 @@ test: z827 testResult
 
 writeUp: z827 testResult
 	support/writeScript 2>&1 | tee writeUp
-	more writeUp
 
-print: writeUp
+print: z827 writeUp
 	a2ps writeUp
 
 man: manpage

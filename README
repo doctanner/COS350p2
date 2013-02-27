@@ -57,8 +57,7 @@ The makefile provides the following commands:
   results if necessary.
 * make man: Outputs the attached man page.
 * make writeUp: Generates and displays the writeUp document.
-* make print: Prints the last writeUp file using a2ps to the default printer.
-  If no writeUp exists, this command generates a new one.
+* make print: Prints the writeUp file using a2ps to the default printer.
 * make clean: Removes object files created during compilation, but leaves
   executable intact.
 * make erase: Resets project directory by erasing object files, executable,
