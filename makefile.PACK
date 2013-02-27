@@ -42,3 +42,6 @@ erase:
 	rm -f *.txt*
 	rm -f writeUp
 	rm -f z827
+
+flat: erase
+	uninst/flatten
