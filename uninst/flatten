@@ -1,0 +1,33 @@
+clear
+echo "
+Flattening support directory."
+mv support/* ./
+rm -rf support/
+
+echo "
+Disabling scripts."
+chmod -x *Script
+
+echo "
+Switching makefile."
+mv makefile makefile.PACK
+mv uninst/makefile.PACK makefile
+
+echo "
+Switching README"
+mv README readme.PACK
+mv uninst/readme.PACK README
+
+echo "
+Disabling flatten script."
+chmod -x uninst/flatten
+mv uninst/flatten flatten.PACK
+
+echo "
+Enabling setup script."
+mv uninst/setup.PACK SETUP
+rm -rf uninst/
+chmod +x SETUP
+
+echo "
+Done."

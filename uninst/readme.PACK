@@ -1,0 +1,33 @@
+SETUP: - IMPORTANT -
+
+Please use the command "SETUP" or "make" to setup the support material.
+
+
+NOTES:
+
+This variation of my z827 project is flattened to one directory for use with
+the "submit" program. Code and executable file are available without unpacking,
+but support features will not be functional.
+
+Please run the SETUP script directly or with the command "make" to properly
+package the support materials. Once the SETUP script runs, the directory should
+be in the state described in readme.PACK and hard-copy submission.
+
+If the script fails for any reason, the support material can be unpacked
+manually using the following commands:
+
+mkdir support
+mv *.txt* support/
+mv *Script support/
+mv makefile.PACK makefile
+chmod +x support/*Script
+mv readme.PACK README
+
+This makes the support directory, copies the test source files, and copies the
+scripts. It then replaces the SETUP makefile with the z827 makefile. Next, it
+makes the scripts executable. Finally, it replaces this README with the z827
+README.
+
+Additionally, the script erases itself when complete to prevent accidentally
+running it again. This leaves the directory in exactly the state described in
+the z827 README.

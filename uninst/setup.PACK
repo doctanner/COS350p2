@@ -1,0 +1,37 @@
+clear
+echo "
+Deploying support directory."
+mkdir support
+mv *.txt* support/
+mv *Script support/
+
+echo "
+Enabling scripts."
+chmod +x support/*Script
+
+echo "
+Deploying uninst directory."
+mkdir uninst/
+
+echo "
+Switching makefile."
+mv makefile uninst/makefile.PACK
+mv makefile.PACK makefile
+
+echo "
+Switching README"
+mv README uninst/readme.PACK
+mv readme.PACK README
+
+echo "
+Disabling SETUP script."
+chmod -x SETUP
+mv SETUP uninst/setup.PACK
+
+echo "
+Enabling flatten script."
+mv flatten.PACK uninst/flatten
+chmod +x uninst/flatten
+
+echo "
+Done."
