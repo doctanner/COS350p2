@@ -13,7 +13,7 @@ If the filepath does not end in ".z827", the file is passed through
 the compression algorithm. If it does, then the file is passed through
 decompression.
 
-Compressed files saved to the same filepath appended with ".z827".
+Compressed files are saved to the same filepath appended with ".z827".
 Decompressed files are saved to the same filepath with ".z827" removed.
 If the compression or decompression succeeds, the original file is
 deleted.
