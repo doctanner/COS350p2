@@ -17,7 +17,7 @@ testResult: z827
 	clear
 	support/testScript 2>&1 | tee testResult
 
-test: testResult
+test: z827 testResult
 	more testResult
 
 writeUp: z827 testResult
@@ -36,10 +36,7 @@ clean:
 	rm -f *.txt*
 	
 
-erase:
-	rm -f *.o
-	rm -f *Result
-	rm -f *.txt*
+erase: clean
 	rm -f writeUp
 	rm -f z827
 
