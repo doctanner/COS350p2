@@ -334,6 +334,7 @@ unsigned int decompress (int fdSource, int fdDest){
          int bytesToMove = readBufBytes - readBufIndex;
          bytesToMove = bytesToMove > 2 ? 3 : bytesToMove;
          memcpy(inBufFill, readBuf + readBufIndex, bytesToMove);
+         readBufIndex += bytesToMove;
          bitsInBuf += bytesToMove * 8;
 
          // Shift back to right-align buffer
