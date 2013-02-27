@@ -146,7 +146,7 @@ unsigned int compress (int fdSource, int fdDest){
    if (write(fdDest, &origBytes, 4) != 4) return 0;
 
    // Fill read buffer.
-   readBufBytes = read(fdSource, readBuf, 9);
+   readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
    origBytes += readBufBytes;
 
    // If nothing loaded, fail.
@@ -158,7 +158,7 @@ unsigned int compress (int fdSource, int fdDest){
    while (readBufBytes){
       // Fill readBuf if necessary.
       if (readBufIndex >= readBufBytes){
-         readBufBytes = read(fdSource, readBuf, 9);
+         readBufBytes = read(fdSource, readBuf, IO_BUF_SIZE);
          origBytes += readBufBytes;
          readBufIndex = 0;
          if (readBufBytes == 0){
